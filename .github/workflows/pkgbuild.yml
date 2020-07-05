@@ -40,8 +40,8 @@ jobs:
         run: |
           eval $(ssh-agent -s)
           echo "${AUR_SSH_PRIVATE_KEY}" | ssh-add -
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
+          git config --global user.email "action@github.com"
+          git config --global user.name "GitHub Action"
           export GIT_SSH_COMMAND="ssh -o StrictHostKeyChecking=no"
           git clone --depth 1 ssh://aur@aur.archlinux.org/deepin-wine5.git /tmp/deepin-wine5
           cd /tmp/deepin-wine5
