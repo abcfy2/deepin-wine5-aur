@@ -1,0 +1,56 @@
+name: PKGBUILD CI
+
+on: [push, pull_request]
+
+jobs:
+  pkg_build:
+    runs-on: ubuntu-latest
+    container: "oblique/archlinux-yay"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Install and check
+        run: |
+          chown -R aur:aur .
+          sudo -u aur yay --noconfirm -Syu
+          sudo -u aur yay --noconfirm --asdeps -S deepin-udis86
+          sudo -u aur makepkg -si --needed --noconfirm
+          deepin-wine5 --version
+      - name: Refresh .SRCINFO
+        run: |
+          sudo -u aur makepkg --printsrcinfo > .SRCINFO
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git commit -m "chore: refresh .SRCINFO [skip build]" .SRCINFO || true
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+  push-aur:
+    runs-on: ubuntu-latest
+    needs: pkg_build
+    if: "github.repository == 'abcfy2/deepin-wine5-aur' && github.event_name == 'push' && github.ref == 'refs/heads/master'"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        # Force checkout latest version so that .SRCINFO could push to AUR
+        with:
+          ref: "refs/heads/master"
+      - name: Push AUR
+        run: |
+          eval $(ssh-agent -s)
+          echo "${AUR_SSH_PRIVATE_KEY}" | ssh-add -
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          export GIT_SSH_COMMAND="ssh -o StrictHostKeyChecking=no"
+          git clone --depth 1 ssh://aur@aur.archlinux.org/deepin-wine5.git /tmp/deepin-wine5
+          cd /tmp/deepin-wine5
+          rm -fr "${GITHUB_WORKSPACE}/.git"
+          cp -fr "${GITHUB_WORKSPACE}/." .
+          # AUR does not allow push sub directories
+          find -mindepth 1 -maxdepth 1 -type d -prune -not -path './.git' -print0 | xargs -0 rm -fr
+          git add -A
+          git commit -m "chore: automatic push via github action" || true
+          git push
+        env:
+          AUR_SSH_PRIVATE_KEY: ${{ secrets.AUR_SSH_PRIVATE_KEY }}
