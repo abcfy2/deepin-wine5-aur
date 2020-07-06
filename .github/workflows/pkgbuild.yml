@@ -1,6 +1,16 @@
 name: PKGBUILD CI
 
-on: [push, pull_request]
+on:
+  push:
+    paths:
+      - "PKGBUILD"
+      - ".SRCINFO"
+      - "*.patch"
+  pull_request:
+    paths:
+      - "PKGBUILD"
+      - ".SRCINFO"
+      - "*.patch"
 
 jobs:
   pkg_build:
