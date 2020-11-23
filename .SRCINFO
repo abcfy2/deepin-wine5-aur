@@ -9,10 +9,13 @@ pkgbase = deepin-wine5
 	makedepends = tar
 	noextract = deepin-wine5_5.0.16-1_i386.deb
 	noextract = deepin-wine5-i386_5.0.16-1_i386.deb
+	noextract = deepin-wine5-dev_5.0.16-1_i386.deb
 	source = https://community-store-packages.deepin.com/appstore/pool/appstore/d/deepin-wine5/deepin-wine5_5.0.16-1_i386.deb
 	source = https://community-store-packages.deepin.com/appstore/pool/appstore/d/deepin-wine5/deepin-wine5-i386_5.0.16-1_i386.deb
+	source = https://community-store-packages.deepin.com/appstore/pool/appstore/d/deepin-wine5/deepin-wine5-dev_5.0.16-1_i386.deb
 	sha256sums = c50f7095baa3c8f9ff330ad5215c439362a8f3e0f7621a20ecea0890e9e3c621
 	sha256sums = ea3f354438483a0f8f48e015905bc52a41a06d6ff27910c8b71f22f7fb223bdf
+	sha256sums = 50f715c4c25c68bee7df9878553e50c363d8b0df61349a4b4bdfefd392971758
 
 pkgname = deepin-wine5
 	depends = deepin-wine5-i386
@@ -49,3 +52,5 @@ pkgname = deepin-wine5-i386
 	depends = lib32-libxi
 	depends = lib32-glu
 
+pkgname = deepin-wine5-dev
+	depends = deepin-wine5-i386

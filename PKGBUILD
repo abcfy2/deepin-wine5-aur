@@ -1,6 +1,6 @@
 # Maintainer: abcfy2 <abcfy2@163.com>
 
-pkgname=('deepin-wine5' 'deepin-wine5-i386')
+pkgname=('deepin-wine5' 'deepin-wine5-i386' 'deepin-wine5-dev')
 pkgver=5.0.16
 pkgrel=1
 pkgdesc="Deepin Wine5"
@@ -11,15 +11,16 @@ makedepends=('tar')
 source=(
     "https://community-store-packages.deepin.com/appstore/pool/appstore/d/deepin-wine5/deepin-wine5_${pkgver}-${pkgrel}_i386.deb"
     "https://community-store-packages.deepin.com/appstore/pool/appstore/d/deepin-wine5/deepin-wine5-i386_${pkgver}-${pkgrel}_i386.deb"
+    "https://community-store-packages.deepin.com/appstore/pool/appstore/d/deepin-wine5/deepin-wine5-dev_${pkgver}-${pkgrel}_i386.deb"
 )
 noextract=(
     "deepin-wine5_${pkgver}-${pkgrel}_i386.deb"
     "deepin-wine5-i386_${pkgver}-${pkgrel}_i386.deb"
+    "deepin-wine5-dev_${pkgver}-${pkgrel}_i386.deb"
 )
-sha256sums=(
-    'c50f7095baa3c8f9ff330ad5215c439362a8f3e0f7621a20ecea0890e9e3c621'
-    'ea3f354438483a0f8f48e015905bc52a41a06d6ff27910c8b71f22f7fb223bdf'
-)
+sha256sums=('c50f7095baa3c8f9ff330ad5215c439362a8f3e0f7621a20ecea0890e9e3c621'
+            'ea3f354438483a0f8f48e015905bc52a41a06d6ff27910c8b71f22f7fb223bdf'
+            '50f715c4c25c68bee7df9878553e50c363d8b0df61349a4b4bdfefd392971758')
 
 package_deepin-wine5() {
     depends=('deepin-wine5-i386')
@@ -56,4 +57,14 @@ package_deepin-wine5-i386() {
     # Removed conflict files with wine
     rm -fr "deepin-wine5-i386_${pkgver}-${pkgrel}/usr/share/man"
     cp -r "deepin-wine5-i386_${pkgver}-${pkgrel}/." "${pkgdir}/"
+}
+
+package_deepin-wine5-dev() {
+    depends=('deepin-wine5-i386')
+
+    mkdir -p "deepin-wine5-dev_${pkgver}-${pkgrel}"
+    ar -x "deepin-wine5-dev_${pkgver}-${pkgrel}_i386.deb" data.tar.xz --output "deepin-wine5-dev_${pkgver}-${pkgrel}"
+    tar -xf "deepin-wine5-dev_${pkgver}-${pkgrel}/data.tar.xz" --directory="deepin-wine5-dev_${pkgver}-${pkgrel}"
+    rm -f "deepin-wine5-dev_${pkgver}-${pkgrel}/data.tar.xz"
+    cp -r "deepin-wine5-dev_${pkgver}-${pkgrel}/." "${pkgdir}/"
 }
