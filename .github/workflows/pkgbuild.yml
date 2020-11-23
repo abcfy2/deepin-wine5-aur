@@ -33,6 +33,7 @@ jobs:
           git config --local user.name "GitHub Action"
           git commit -m "chore: refresh .SRCINFO [skip build]" .SRCINFO || true
       - name: Push changes
+        if: github.event_name == 'push'
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
