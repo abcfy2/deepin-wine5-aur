@@ -8,6 +8,7 @@ arch=('i686' 'x86_64')
 url="http://www.deepin.org"
 license=('Proprietary')
 makedepends=('tar')
+provides=("wine=$pkgver")
 source=(
     "https://community-store-packages.deepin.com/appstore/pool/appstore/d/deepin-wine5/deepin-wine5_${pkgver}-${pkgrel}_i386.deb"
     "https://community-store-packages.deepin.com/appstore/pool/appstore/d/deepin-wine5/deepin-wine5-i386_${pkgver}-${pkgrel}_i386.deb"
